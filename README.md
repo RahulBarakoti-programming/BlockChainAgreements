@@ -6,7 +6,9 @@
 ```git clone https://github.com/RahulBarakoti-programming/BlockChainAgreements/```
 
 ```cd BlockChainAgreements```
+
 ```cd frontend```
+
 ```npm install```
 now to check frontend is working or not
 ```npm run dev```
@@ -14,7 +16,9 @@ now to check frontend is working or not
 ### BACKEND SET UP
 
 ```cd ..```
+
 ```cd backend```
+
 ```npm install```
 
 now check if backend is working or not
