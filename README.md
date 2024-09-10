@@ -10,7 +10,9 @@
 ```cd frontend```
 
 ```npm install```
+
 now to check frontend is working or not
+
 ```npm run dev```
 
 ### BACKEND SET UP
@@ -22,4 +24,5 @@ now to check frontend is working or not
 ```npm install```
 
 now check if backend is working or not
+
 ```npm run dev```
