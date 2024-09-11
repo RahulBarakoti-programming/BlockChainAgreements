@@ -1,6 +1,7 @@
-import mongoose, { Mongoose } from "mongoose";
+import mongoose from "mongoose";
+const { Schema } = mongoose; // Destructure Schema from mongoose
 
-const userSchema = new mongoose.Schema({
+const userSchema = new Schema({
   firstName: {
     type: String,
     required: true,
@@ -8,22 +9,21 @@ const userSchema = new mongoose.Schema({
   lastName: {
     type: String,
     required: true,
-  }, email: {
+  },
+  email: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
   },
   walletAddress: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
   },
   agreements: [{
     type: Schema.Types.ObjectId,
-    ref: 'Agreement'
+    ref: 'Agreement',
   }],
-}, { timestamps: true })
+}, { timestamps: true });
 
 export const User = mongoose.model('User', userSchema);
-
-
