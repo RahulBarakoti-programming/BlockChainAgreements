@@ -11,8 +11,12 @@ import { Label } from "@/components/ui/label.jsx";
 import { Button } from "@/components/ui/button.jsx";
 import { Formik } from "formik";
 import { loginSchema } from "@/validation/registerSchema.js";
+import { loginUser } from "@/handler/authCallHandler.js";
+import { useNavigate } from "react-router-dom";
 
 function AuthLogin({ setStat }) {
+  const navigate = useNavigate();
+
   return (
     <>
       <div className="h-full w-full flex justify-center items-center">
@@ -22,11 +26,18 @@ function AuthLogin({ setStat }) {
             pass: "",
           }}
           validationSchema={loginSchema}
-          onSubmit={(values, { setSubmitting }) => {
-            setTimeout(() => {
-              console.log(values);
-              setSubmitting(false);
-            }, 5000);
+          onSubmit={async (values, { setSubmitting }) => {
+            try {
+              const result = await loginUser(values);
+              if (result.success) {
+                navigate("/");
+              } else {
+                console.error(result.message);
+              }
+            } catch (error) {
+              console.error("Unexpected error:", error);
+            }
+            setSubmitting(false);
           }}
         >
           {({
@@ -37,26 +48,26 @@ function AuthLogin({ setStat }) {
             handleBlur,
             handleSubmit,
             isSubmitting,
-            /* and other goodies */
           }) => (
             <Card className="w-[350px]">
               <CardHeader>
                 <CardTitle className="text-2xl">Login</CardTitle>
               </CardHeader>
               <CardContent>
-                <form>
+                <form onSubmit={handleSubmit}>
                   <div className="grid w-full items-center gap-4 mt-4">
                     <div className="flex flex-col space-y-1.5">
-                      <Label htmlFor="name">Email</Label>
+                      <Label htmlFor="email">Email</Label>
                       <Input
                         id="email"
                         placeholder="example@gmail.com"
                         type="email"
                         name="email"
                         onChange={handleChange}
+                        onBlur={handleBlur}
                         value={values.email}
                         className={
-                          errors.email && errors.email ? "border-red-600" : ""
+                          errors.email && touched.email ? "border-red-600" : ""
                         }
                       />
                       {errors.email && touched.email && (
@@ -68,17 +79,17 @@ function AuthLogin({ setStat }) {
                   </div>
                   <div className="grid w-full items-center gap-4 mt-4">
                     <div className="flex flex-col space-y-1.5">
-                      <Label htmlFor="name">Password</Label>
+                      <Label htmlFor="pass">Password</Label>
                       <Input
                         id="pass"
                         placeholder="*******"
-                        type="pass"
+                        type="password"
                         name="pass"
                         onChange={handleChange}
                         onBlur={handleBlur}
                         value={values.pass}
                         className={
-                          errors.pass && errors.pass ? "border-red-600" : ""
+                          errors.pass && touched.pass ? "border-red-600" : ""
                         }
                       />
                       {errors.pass && touched.pass && (

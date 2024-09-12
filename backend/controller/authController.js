@@ -82,7 +82,7 @@ export const login = async (req, res) => {
         email,
         name: user.name,
         email: user.email,
-        firstName: user.firstName,  // Use 'firstName' instead of 'name'
+        firstName: user.firstName,
         lastName: user.lastName,
       })
   } catch (err) {

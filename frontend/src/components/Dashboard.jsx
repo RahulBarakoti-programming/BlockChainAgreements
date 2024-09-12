@@ -1,84 +1,50 @@
 import React from "react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "./ui/card.jsx";
+
 import { Label } from "@radix-ui/react-label";
-import { BackpackIcon, KeyboardIcon } from "@radix-ui/react-icons";
+import DashboardHead from "./DashboardHead";
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/ui/resizable";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 function Dashboard() {
   return (
     <>
       <div className="h-full w-full p-8">
         <Label className="text-3xl font-medium">Dashboard</Label>
-        <div className="flex justify-between gap-5 mt-6">
-          <Card className="flex grow flex-col">
-            <CardHeader className="w-full pb-2.5">
-              <div className="flex flex-row  items-center justify-between">
-                <CardTitle>Total Revenue</CardTitle>
-                <CardDescription>$</CardDescription>
-              </div>
-            </CardHeader>
-            <CardContent className="pb-0">
-              <Label className="font-bold text-2xl">$ ----</Label>
-            </CardContent>
-            <CardFooter>
-              <CardDescription>nothing to show yet</CardDescription>
-            </CardFooter>
-          </Card>
 
-          <Card className="flex grow flex-col">
-            <CardHeader className="w-full pb-2.5">
-              <div className="flex flex-row  items-center justify-between">
-                <CardTitle>Pending Payments</CardTitle>
-                <CardDescription>$</CardDescription>
-              </div>
-            </CardHeader>
-            <CardContent className="pb-0">
-              <Label className="font-bold text-2xl">$ ----</Label>
-            </CardContent>
-            <CardFooter>
-              <CardDescription>nothing to show yet</CardDescription>
-            </CardFooter>
-          </Card>
+        <DashboardHead></DashboardHead>
 
-          <Card className="flex grow flex-col">
-            <CardHeader className="w-full pb-2.5">
-              <div className="flex flex-row  items-center justify-between">
-                <CardTitle>Total Projects</CardTitle>
-                <CardDescription>
-                  <BackpackIcon></BackpackIcon>
-                </CardDescription>
-              </div>
-            </CardHeader>
-            <CardContent className="pb-0">
-              <Label className="font-bold text-2xl">-</Label>
-            </CardContent>
-            <CardFooter>
-              <CardDescription>nothing to show yet</CardDescription>
-            </CardFooter>
-          </Card>
-
-          <Card className="flex grow flex-col">
-            <CardHeader className="w-full pb-2.5">
-              <div className="flex flex-row  items-center justify-between">
-                <CardTitle>Active Projects</CardTitle>
-                <CardDescription>
-                  <KeyboardIcon></KeyboardIcon>
-                </CardDescription>
-              </div>
-            </CardHeader>
-            <CardContent className="pb-0">
-              <Label className="font-bold text-2xl">-</Label>
-            </CardContent>
-            <CardFooter>
-              <CardDescription>nothing to show yet</CardDescription>
-            </CardFooter>
-          </Card>
+        <div className="flex w-full h-full">
+          <Tabs defaultValue="account" className="mt-8 w-full h-full">
+            <TabsList>
+              <TabsTrigger value="account">Agreements</TabsTrigger>
+              <TabsTrigger value="password">Send Agreement</TabsTrigger>
+            </TabsList>
+            <TabsContent className="h-full" value="account">
+              <ResizablePanelGroup
+                direction="horizontal"
+                className="min-h-[200px] rounded-lg border md:min-w-[450px]"
+              >
+                <ResizablePanel defaultSize={25}>
+                  <div className="flex h-full items-center justify-center p-6">
+                    <span className="font-semibold">Sidebar</span>
+                  </div>
+                </ResizablePanel>
+                <ResizableHandle withHandle />
+                <ResizablePanel defaultSize={75}>
+                  <div className="flex h-full items-center justify-center p-6">
+                    <span className="font-semibold">Content</span>
+                  </div>
+                </ResizablePanel>
+              </ResizablePanelGroup>
+            </TabsContent>
+            <TabsContent className="h-full" value="password">
+              Change your password here.
+            </TabsContent>
+          </Tabs>
         </div>
       </div>
     </>

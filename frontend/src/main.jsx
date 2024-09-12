@@ -5,13 +5,14 @@ import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from "./components/Login.jsx";
 import { PrivateRoute, AuthRoute } from "./components/RouteProtection.jsx";
+import Dashboard from "./components/Dashboard.jsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: (
       <PrivateRoute>
-        <App />
+        <Dashboard />
       </PrivateRoute>
     ),
   },
