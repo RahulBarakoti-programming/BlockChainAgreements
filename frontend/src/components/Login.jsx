@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import AuthLogin from "./AuthLogin";
-import AuthSignup from "./AuthSignup";
-import MetaLogin from "./MetaLogin";
-import Dashboard from "./Dashboard";
+import AuthLogin from "./AuthLogin.jsx";
+import AuthSignup from "./AuthSignup.jsx";
+import MetaLogin from "./MetaLogin.jsx";
+import Dashboard from "./Dashboard.jsx";
 
 const Login = () => {
   const [stat, setStat] = useState("meta");

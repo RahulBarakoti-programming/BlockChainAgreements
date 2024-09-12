@@ -6,7 +6,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "./ui/card";
+} from "./ui/card.jsx";
 import { Label } from "@radix-ui/react-label";
 import { BackpackIcon, KeyboardIcon } from "@radix-ui/react-icons";
 

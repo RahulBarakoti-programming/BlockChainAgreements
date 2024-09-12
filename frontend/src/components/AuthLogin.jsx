@@ -5,12 +5,12 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
+} from "@/components/ui/card.jsx";
+import { Input } from "@/components/ui/input.jsx";
+import { Label } from "@/components/ui/label.jsx";
+import { Button } from "@/components/ui/button.jsx";
 import { Formik } from "formik";
-import { loginSchema } from "@/validation/registerSchema";
+import { loginSchema } from "@/validation/registerSchema.js";
 
 function AuthLogin({ setStat }) {
   return (

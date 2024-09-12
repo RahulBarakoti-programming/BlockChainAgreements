@@ -1,18 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button.jsx";
 import {
   Card,
-  CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+} from "@/components/ui/card.jsx";
+
 import metaLogo from "@/assets/meta.png";
-import AlertDialogA from "./Alert";
-import { checkMetaMaskAvailability } from "@/web3functions/metaCheck";
+
+import { checkMetaMaskAvailability } from "@/web3functions/metaCheck.js";
 
 function MetaLogin({ setStat }) {
   let [retry, setRetry] = useState(0);

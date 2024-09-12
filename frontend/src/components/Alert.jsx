@@ -8,8 +8,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
+} from "@/components/ui/alert-dialog.jsx";
 
 function AlertDialogA() {
   const [isOpen, setIsOpen] = useState(true);
