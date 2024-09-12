@@ -4,14 +4,24 @@ import App from "./App.jsx";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from "./components/Login.jsx";
+import { PrivateRoute, AuthRoute } from "./components/RouteProtection.jsx";
+
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: (
+      <PrivateRoute>
+        <App />
+      </PrivateRoute>
+    ),
   },
   {
     path: "/login",
-    element: <Login />,
+    element: (
+      <AuthRoute>
+        <Login />
+      </AuthRoute>
+    ),
   },
 ]);
 

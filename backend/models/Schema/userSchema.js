@@ -15,10 +15,14 @@ const userSchema = new Schema({
     required: true,
     unique: true,
   },
+  pass: {
+    type: String,
+    required: true,
+  },
   walletAddress: {
     type: String,
     required: true,
-    unique: true,
+
   },
   agreements: [{
     type: Schema.Types.ObjectId,
