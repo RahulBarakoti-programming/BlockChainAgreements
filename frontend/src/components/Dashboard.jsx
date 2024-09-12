@@ -8,6 +8,7 @@ import {
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import AgreementViewer from "./AgreementViewer";
 
 function Dashboard() {
   return (
@@ -29,8 +30,8 @@ function Dashboard() {
                 className="min-h-[200px] rounded-lg border md:min-w-[450px]"
               >
                 <ResizablePanel defaultSize={25}>
-                  <div className="flex h-full items-center justify-center p-6">
-                    <span className="font-semibold">Sidebar</span>
+                  <div className="flex h-full items-center justify-center p-0">
+                    <AgreementViewer></AgreementViewer>
                   </div>
                 </ResizablePanel>
                 <ResizableHandle withHandle />

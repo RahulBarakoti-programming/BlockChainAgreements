@@ -32,10 +32,7 @@ const transactionSchema = new mongoose.Schema({
     enum: ['initiated', 'completed', 'failed'],
     default: 'initiated'
   },
-  createdAt: {
-    type: Date,
-    default: Date.now
-  }
+
 });
 
 export const Transaction = mongoose.model('Transaction', transactionSchema);
