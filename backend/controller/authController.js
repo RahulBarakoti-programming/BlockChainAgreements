@@ -28,7 +28,10 @@ export const signup = async (req, res) => {
 
     await newUser.save();
     const token = jwt.sign(
-      { email: newUser.email },
+      {
+        userId: newUser._id,
+        email: newUser.email
+      },
       process.env.JWT_SECRET,
       { expiresIn: '24h' }
     );

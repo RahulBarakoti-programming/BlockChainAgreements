@@ -27,8 +27,15 @@ const agreementSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ['pending', 'active', 'completed', 'verified', 'disputed'],
+    enum: ['pending', 'active', 'completed', 'verified', 'disputed', 'aReject', 'cReject'],
     default: 'pending'
+    //pending = freelancer send but not accepted by client
+    //active = accepted by client
+    //completed = completed status by freelancer
+    // verified = verified by client
+    // disputed = money sent
+    //aReject = not accepted by client
+    //cReject = completion is not accepted by client
   },
 }, { timestamps: true })
 

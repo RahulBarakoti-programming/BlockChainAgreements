@@ -25,7 +25,7 @@ function AgreementViewer() {
           <CardFooter className="p-0 pt-0">
             <CardDescription className="p-2 text-xs font-normal pt-0">
               {
-                <Badge variant="secondary" className="hover:bg-green-200">
+                <Badge variant="secondary" className={`bg-${agreement.status}`}>
                   {agreement.status}
                 </Badge>
               }

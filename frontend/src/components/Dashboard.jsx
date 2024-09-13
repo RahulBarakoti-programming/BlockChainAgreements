@@ -9,6 +9,8 @@ import {
 } from "@/components/ui/resizable";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import AgreementViewer from "./AgreementViewer";
+import AgreementReader from "./AgreementReader";
+import SendAgreement from "./SendAgreement";
 
 function Dashboard() {
   return (
@@ -37,13 +39,13 @@ function Dashboard() {
                 <ResizableHandle withHandle />
                 <ResizablePanel defaultSize={75}>
                   <div className="flex h-full items-center justify-center p-6">
-                    <span className="font-semibold">Content</span>
+                    <AgreementReader></AgreementReader>
                   </div>
                 </ResizablePanel>
               </ResizablePanelGroup>
             </TabsContent>
             <TabsContent className="h-full" value="password">
-              Change your password here.
+              <SendAgreement></SendAgreement>
             </TabsContent>
           </Tabs>
         </div>
