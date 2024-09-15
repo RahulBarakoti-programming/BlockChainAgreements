@@ -13,6 +13,7 @@ import { Formik } from "formik";
 import { loginSchema } from "@/validation/registerSchema.js";
 import { loginUser } from "@/handler/authCallHandler.js";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 function AuthLogin({ setStat }) {
   const navigate = useNavigate();
@@ -28,10 +29,25 @@ function AuthLogin({ setStat }) {
           validationSchema={loginSchema}
           onSubmit={async (values, { setSubmitting }) => {
             try {
-              const result = await loginUser(values);
+              const data = { email: values.email, pass: values.pass };
+              const result = await loginUser(data);
               if (result.success) {
+                toast("Successfull", {
+                  description: `"Login Successfull`,
+
+                  style: {
+                    color: "green",
+                  },
+                });
                 navigate("/");
               } else {
+                toast("Error", {
+                  description: result.message,
+
+                  style: {
+                    color: "red",
+                  },
+                });
                 console.error(result.message);
               }
             } catch (error) {

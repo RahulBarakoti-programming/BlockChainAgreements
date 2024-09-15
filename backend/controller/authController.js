@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 
 
 export const signup = async (req, res) => {
+
   try {
 
     const { firstName, lastName, email, pass, walletAddress } = req.body;
@@ -60,39 +61,42 @@ export const signup = async (req, res) => {
 export const login = async (req, res) => {
   try {
     const { email, pass } = req.body;
+
+    // Find the user by email
     const user = await User.findOne({ email });
 
     if (!user) {
-      return res.status(403)
-        .json({ message: "User Not found Please try to Signup", success: false });
+      return res.status(403).json({ message: "User not found, please signup first", success: false });
     }
+
+    // Compare passwords
     const isPassEqual = await bcrypt.compare(pass, user.pass);
     if (!isPassEqual) {
-      return res.status(403)
-        .json({ message: "Incorrect Password", success: false });
+      return res.status(403).json({ message: "Incorrect Password", success: false });
     }
-    const jwtToken = jwt.sign(
-      { email: user.email },
+
+    // Generate JWT token
+    const token = jwt.sign(
+      {
+        userId: user._id,
+        email: user.email
+      },
       process.env.JWT_SECRET,
       { expiresIn: '24h' }
-    )
+    );
 
-    res.status(200)
-      .json({
-        message: "Login Success",
-        success: true,
-        jwtToken,
-        email,
-        name: user.name,
-        email: user.email,
-        firstName: user.firstName,
-        lastName: user.lastName,
-      })
+    // Respond with the token
+    return res.status(200).json({
+      message: "Login Successful",
+      success: true,
+      token
+    });
+
   } catch (err) {
-    res.status(500)
-      .json({
-        message: "Internal server errror",
-        success: false
-      })
+    return res.status(500).json({
+      message: "Internal server error",
+      success: false,
+      error: err.message
+    });
   }
-}
+};

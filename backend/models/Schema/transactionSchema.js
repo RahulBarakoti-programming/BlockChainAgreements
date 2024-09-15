@@ -24,7 +24,6 @@ const transactionSchema = new mongoose.Schema({
   },
   transactionHash: {
     type: String,
-
     unique: true
   },
   status: {

@@ -1,23 +1,49 @@
 import { Label } from "@radix-ui/react-label";
 import React, { useEffect, useState } from "react";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
+import { Textarea } from "./ui/textarea";
+import { Button } from "./ui/button";
 
-function TextEditor() {
-  const [value, setValue] = useState("");
-  useEffect(() => {
-    console.log(value);
-  }, [value]);
-
+function TextEditor({
+  values,
+  handleChange,
+  errors,
+  touched,
+  handleSubmit,
+  isSubmitting,
+}) {
   return (
     <>
-      <Label>Agreement Details</Label>
-      <ReactQuill
-        className="h-full w-full"
-        theme="snow"
-        value={value}
-        onChange={setValue}
+      <Label
+        htmlFor="description"
+        className={`text-xl font-bold mb-5 ${
+          errors.clientEmail && touched.clientEmail ? "border-red-600" : ""
+        }`}
+      >
+        Agreement Description
+      </Label>
+      <Textarea
+        placeholder="Type you Agreement details here..."
+        id="description"
+        name="description"
+        onChange={handleChange}
+        value={values.description}
+        className={`${
+          errors.description && touched.description ? "border-red-600" : ""
+        }`}
       />
+      {errors.description && touched.description && (
+        <span className="text-xs text-red-600">{errors.description}</span>
+      )}
+      <div className="flex justify-end">
+        <Button
+          className="mt-16 pl-9 pr-9"
+          type="button"
+          onClick={handleSubmit}
+          disabled={isSubmitting}
+        >
+          Submit
+        </Button>
+      </div>
     </>
   );
 }

@@ -6,6 +6,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from "./components/Login.jsx";
 import { PrivateRoute, AuthRoute } from "./components/RouteProtection.jsx";
 import Dashboard from "./components/Dashboard.jsx";
+import { Toaster } from "@/components/ui/sonner";
 
 const router = createBrowserRouter([
   {
@@ -29,5 +30,6 @@ const router = createBrowserRouter([
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <RouterProvider router={router} />
+    <Toaster />
   </StrictMode>
 );

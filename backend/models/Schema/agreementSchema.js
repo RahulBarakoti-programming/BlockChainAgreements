@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+const { Schema } = mongoose;
 
 const agreementSchema = new mongoose.Schema({
   freelancer: {
@@ -27,8 +28,8 @@ const agreementSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ['pending', 'active', 'completed', 'verified', 'disputed', 'aReject', 'cReject'],
-    default: 'pending'
+    enum: ['initial', 'pending', 'active', 'completed', 'verified', 'disputed', 'aReject', 'cReject'],
+    default: 'initial'
     //pending = freelancer send but not accepted by client
     //active = accepted by client
     //completed = completed status by freelancer
@@ -36,6 +37,13 @@ const agreementSchema = new mongoose.Schema({
     // disputed = money sent
     //aReject = not accepted by client
     //cReject = completion is not accepted by client
+  },
+  freelancerWalletAddress: {
+    type: String,
+
+  },
+  clientWalletAddress: {
+    type: String,
   },
 }, { timestamps: true })
 

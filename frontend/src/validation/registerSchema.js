@@ -1,4 +1,4 @@
-import { object, string, } from 'yup';
+import { date, number, object, string, } from 'yup';
 
 export let userSchema = object({
   firstName: string().required("Enter Your First Name"),
@@ -12,4 +12,11 @@ export let loginSchema = object({
   pass: string().required("Create a Password"),
 
 });
+
+export let agreementSchema = object({
+  clientEmail: string().email("Enter a valid email").required("Enter Client's Email"),
+  amount: number("Enter a valid amount").required("Enter amount here"),
+  description: string().required("Enter Agreement Details"),
+  deadline: date().required("select DeadLine Date")
+})
 

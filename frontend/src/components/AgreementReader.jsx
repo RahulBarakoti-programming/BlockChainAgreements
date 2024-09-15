@@ -44,6 +44,9 @@ function AgreementReader({ agreement }) {
         <Label className="text-base">Dead Line</Label>
         <CardDescription className="mb-5">18 oct 2024</CardDescription>
         <hr className="mb-4" />
+        <Label className="text-base">Amount</Label>
+        <CardDescription className="mb-5">$2,000</CardDescription>
+        <hr className="mb-4" />
 
         <CardFooter className="mt-9 flex justify-end">
           <Button>Sign and Approve</Button>

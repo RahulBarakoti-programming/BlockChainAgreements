@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-const { Schema } = mongoose; // Destructure Schema from mongoose
+const { Schema } = mongoose;
 
 const userSchema = new Schema({
   firstName: {

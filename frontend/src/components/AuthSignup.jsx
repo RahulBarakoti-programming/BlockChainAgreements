@@ -13,6 +13,7 @@ import { Formik } from "formik";
 import { userSchema } from "@/validation/registerSchema.js";
 import { signupUser } from "@/handler/authCallHandler";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 function AuthSignup({ setStat }) {
   const navigate = useNavigate();
@@ -36,7 +37,13 @@ function AuthSignup({ setStat }) {
               walletAddress: "",
             });
 
-            console.log("Signup successful:", response);
+            toast("Successfull", {
+              description: "Signup successful",
+
+              style: {
+                color: "green",
+              },
+            });
 
             navigate("/");
           } catch (error) {

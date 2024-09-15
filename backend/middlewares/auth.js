@@ -1,16 +1,17 @@
 import jwt from 'jsonwebtoken';
 
 const ensureAuthenticated = (req, res, next) => {
-  const auth = req.headers['authorization'];
+  const authHeader = req.headers['authorization'];
 
-  if (!auth) {
-    return res.status(403).json({ message: 'Unauthorized, JWT token is required' });
+  if (!authHeader) {
+    return res.status(401).json({ message: 'Unauthorized, JWT token is required' });
+
   }
 
-  const token = auth.split(' ')[1];
+  const token = authHeader.split(' ')[1];
 
   if (!token) {
-    return res.status(403).json({ message: 'Unauthorized, JWT token is missing' });
+    return res.status(401).json({ message: 'Unauthorized, JWT token is missing' });
   }
 
   try {
@@ -18,12 +19,13 @@ const ensureAuthenticated = (req, res, next) => {
 
     req.user = { id: decoded.userId, email: decoded.email };
 
-
-
     next();
   } catch (err) {
+    if (err.name === 'TokenExpiredError') {
+      return res.status(401).json({ message: 'Unauthorized, JWT token has expired' });
+    }
+    return res.status(401).json({ message: 'Unauthorized, JWT token is invalid' });
 
-    return res.status(403).json({ message: 'Unauthorized, JWT token is wrong or expired' });
   }
 };
 

@@ -1,13 +1,13 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:8000/';
+const API_URL = import.meta.env.VITE_API_URL;
 
 
 export const signupUser = async (userData) => {
 
   try {
 
-    const response = await axios.post(`${API_URL}auth/signup`, userData, {
+    const response = await axios.post(`${API_URL}/auth/signup`, userData, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -46,18 +46,18 @@ export const signupUser = async (userData) => {
     }
   }
 };
-export const loginUser = async (userData) => {
+export const loginUser = async (data) => {
 
   try {
 
-    const response = await axios.post(`${API_URL}auth/login`, userData, {
+    const response = await axios.post(`${API_URL}/auth/login`, data, {
       headers: {
         'Content-Type': 'application/json',
       },
     });
 
 
-    const { token, user } = response.data;
+    const { token } = response.data;
 
 
     localStorage.setItem('token', token);
@@ -66,7 +66,7 @@ export const loginUser = async (userData) => {
     return {
       success: true,
       message: 'Signup successful',
-      user,
+
     };
   } catch (error) {
 
