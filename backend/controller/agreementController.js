@@ -165,10 +165,7 @@ export const addFreelancer = async (req, res) => {
     if (!updatedAgreement) {
       return res.status(404).json({ message: 'Agreement not found' });
     }
-    const clientId = updatedAgreement.client;
-    await User.findByIdAndUpdate(clientId, {
-      $push: { agreements: updatedAgreement._id },
-    });
+
 
 
     return res.status(200).json({
@@ -200,6 +197,10 @@ export const addClient = async (req, res) => {
     if (!updatedAgreement) {
       return res.status(404).json({ message: 'Agreement not found' });
     }
+    const clientId = updatedAgreement.client;
+    await User.findByIdAndUpdate(clientId, {
+      $push: { agreements: updatedAgreement._id },
+    });
 
     return res.status(200).json({
       success: true,
