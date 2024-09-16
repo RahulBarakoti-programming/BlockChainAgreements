@@ -91,7 +91,11 @@ function Dashboard() {
               <ResizableHandle withHandle />
               <ResizablePanel defaultSize={75}>
                 <div className="flex h-full items-center justify-center p-6">
-                  <AgreementReader setLoader={setLoader} agreement={active} />
+                  <AgreementReader
+                    setAgreement={setActive}
+                    setLoader={setLoader}
+                    agreement={active}
+                  />
                 </div>
               </ResizablePanel>
             </ResizablePanelGroup>

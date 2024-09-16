@@ -7,15 +7,28 @@ import { Button } from "./ui/button";
 import {
   clientSign,
   freelancerSign,
-  updateByClient,
   updateByFreelancer,
+  verifyCompletion,
 } from "@/web3functions/clientSign";
 
-function AgreementReader({ agreement, setLoader }) {
+function AgreementReader({ agreement, setLoader, setAgreement }) {
+  if (!agreement) {
+    return <div>No agreement selected.</div>;
+  }
+
+  // Function to handle state updates safely
+  const updateAgreementStatus = (newStatus) => {
+    setAgreement((prevAgreement) => ({
+      ...prevAgreement,
+      status: newStatus,
+    }));
+  };
+
   const handleSignAndApprove = async () => {
     setLoader(true);
     try {
       await clientSign(agreement.id, agreement.amount);
+      updateAgreementStatus("active"); // Update status locally
     } catch (error) {
       console.error("Error signing and approving", error);
     } finally {
@@ -31,6 +44,7 @@ function AgreementReader({ agreement, setLoader }) {
         agreement.amount,
         agreement.id
       );
+      updateAgreementStatus("pending"); // Update status locally
     } catch (error) {
       console.error("Error signing and sending", error);
     } finally {
@@ -42,6 +56,7 @@ function AgreementReader({ agreement, setLoader }) {
     setLoader(true);
     try {
       await updateByFreelancer(agreement.id, "completed");
+      updateAgreementStatus("completed"); // Update status locally
     } catch (error) {
       console.error("Error updating by freelancer", error);
     } finally {
@@ -52,17 +67,14 @@ function AgreementReader({ agreement, setLoader }) {
   const handleClientVerify = async () => {
     setLoader(true);
     try {
-      await updateByClient(agreement.id, "verified");
+      await verifyCompletion(agreement.id);
+      updateAgreementStatus("verified"); // Update status locally
     } catch (error) {
       console.error("Error verifying agreement", error);
     } finally {
       setLoader(false);
     }
   };
-
-  if (!agreement) {
-    return <div>No agreement selected.</div>;
-  }
 
   return (
     <div className="w-full h-full">
@@ -97,14 +109,15 @@ function AgreementReader({ agreement, setLoader }) {
         </CardDescription>
         <hr className="mb-4" />
 
-        {agreement.requestedBy == "client" && agreement.status == "pending" && (
-          <CardFooter className="mt-9 flex justify-end">
-            <Button onClick={handleSignAndApprove}>Sign and Approve</Button>
-          </CardFooter>
-        )}
+        {agreement.requestedBy === "client" &&
+          agreement.status === "pending" && (
+            <CardFooter className="mt-9 flex justify-end">
+              <Button onClick={handleSignAndApprove}>Sign and Approve</Button>
+            </CardFooter>
+          )}
 
-        {agreement.requestedBy == "freelancer" &&
-          agreement.status == "initial" && (
+        {agreement.requestedBy === "freelancer" &&
+          agreement.status === "initial" && (
             <CardFooter className="mt-9 flex justify-end">
               <Button onClick={handleFreelancerSignAndSend}>
                 Sign and Send
@@ -112,15 +125,15 @@ function AgreementReader({ agreement, setLoader }) {
             </CardFooter>
           )}
 
-        {agreement.requestedBy == "freelancer" &&
-          agreement.status == "active" && (
+        {agreement.requestedBy === "freelancer" &&
+          agreement.status === "active" && (
             <CardFooter className="mt-9 flex justify-end">
               <Button onClick={handleFreelancerComplete}>Completed</Button>
             </CardFooter>
           )}
 
-        {agreement.requestedBy == "client" &&
-          agreement.status == "completed" && (
+        {agreement.requestedBy === "client" &&
+          agreement.status === "completed" && (
             <CardFooter className="mt-9 flex justify-end">
               <Button onClick={handleClientVerify}>Verify</Button>
             </CardFooter>
