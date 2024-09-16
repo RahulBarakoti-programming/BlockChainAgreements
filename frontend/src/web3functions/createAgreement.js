@@ -155,7 +155,7 @@ const CONTRACT_ABI = [
   }
 ];
 
-const ContractAddress = '0xcdf7add9cc0c4f18131cf9557efc30c069e56128';
+const ContractAddress = import.meta.env.VITE_CONTRACT_ADRESS;
 
 async function createAgreement(projectDetails, amountInMATIC, agreementId) {
   try {

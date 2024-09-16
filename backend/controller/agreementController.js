@@ -50,20 +50,25 @@ export const agreementsSend = async (req, res) => {
 
 export const agreementSend = async (req, res) => {
   try {
-    const userId = req.user.userId;
+    const userId = req.user.id;
     const agreementId = req.params.id;
 
-
     const agreement = await Agreement.findById(agreementId)
-      .populate('freelancer client', 'email');
+      .populate('freelancer client', 'email firstName lastName');
 
     if (!agreement) {
       return res.status(404).json({ message: 'Agreement not found' });
     }
 
+    const clientId = agreement.client._id.toString();
+    const freelancerId = agreement.freelancer._id.toString();
+
+
+
 
     let requestedBy = 'freelancer';
-    const userIsClient = agreement.client._id.toString() === userId;
+    const userIsClient = clientId === userId;
+
     if (userIsClient) {
       requestedBy = 'client';
     }
@@ -72,12 +77,16 @@ export const agreementSend = async (req, res) => {
     const response = {
       requestedBy,
       email: userIsClient ? agreement.freelancer.email : agreement.client.email,
+      name: userIsClient
+        ? `${agreement.freelancer.firstName} ${agreement.freelancer.lastName}`
+        : `${agreement.client.firstName} ${agreement.client.lastName}`,
       projectDetails: {
         description: agreement.projectDetails.description,
         deadline: agreement.projectDetails.deadline
       },
       amount: agreement.amount,
-      id: agreement.id
+      id: agreement._id.toString(), // Ensure _id is a string
+      status: agreement.status,
     };
 
     return res.status(200).json(response);
@@ -86,6 +95,7 @@ export const agreementSend = async (req, res) => {
     return res.status(500).json({ message: 'Server Error' });
   }
 };
+
 
 export const createAgreement = async (req, res) => {
 
@@ -118,6 +128,7 @@ export const createAgreement = async (req, res) => {
     });
 
 
+
     await newAgreement.save();
     await User.findByIdAndUpdate(freelancerId, { $push: { agreements: newAgreement._id } });
 
@@ -147,7 +158,7 @@ export const addFreelancer = async (req, res) => {
 
     const updatedAgreement = await Agreement.findByIdAndUpdate(
       agreementId,
-      { freelancerWalletAddress },
+      { freelancerWalletAddress, status: 'pending', },
       { new: true }
     );
 
@@ -182,7 +193,7 @@ export const addClient = async (req, res) => {
 
     const updatedAgreement = await Agreement.findByIdAndUpdate(
       agreementId,
-      { clientWalletAddress },
+      { clientWalletAddress, status: 'active' },
       { new: true }
     );
 
@@ -200,6 +211,77 @@ export const addClient = async (req, res) => {
     return res.status(500).json({ message: 'Internal Server Error', error });
   }
 }
+
+
+export const updateByFreelancer = async (req, res) => {
+  try {
+
+    const userId = req.user.id;
+
+
+    const { agreementId, status } = req.body;
+
+
+    const agreement = await Agreement.findById(agreementId);
+
+
+    if (!agreement) {
+      return res.status(404).json({ message: 'Agreement not found' });
+    }
+
+
+    if (agreement.freelancer.toString() !== userId) {
+      return res.status(403).json({ message: 'Unauthorized. You are not the freelancer of this agreement.' });
+    }
+
+
+    agreement.status = status;
+    await agreement.save();
+
+
+    return res.status(200).json({ success: true, message: 'Agreement status updated.' });
+
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: 'Server Error' });
+  }
+};
+
+
+export const updateByClient = async (req, res) => {
+  try {
+
+    const userId = req.user.id;
+
+
+    const { agreementId, status } = req.body;
+
+
+    const agreement = await Agreement.findById(agreementId);
+
+
+    if (!agreement) {
+      return res.status(404).json({ message: 'Agreement not found' });
+    }
+
+
+    if (agreement.client.toString() !== userId) {
+      return res.status(403).json({ message: 'Unauthorized. You are not the client of this agreement.' });
+    }
+
+
+    agreement.status = status;
+    await agreement.save();
+
+
+    return res.status(200).json({ success: true, message: 'Agreement status updated to active.' });
+
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: 'Server Error' });
+  }
+};
+
 
 
 

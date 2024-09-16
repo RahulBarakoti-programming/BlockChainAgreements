@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Card,
@@ -7,7 +7,6 @@ import {
   CardFooter,
   CardHeader,
 } from "./ui/card";
-import axios from "axios";
 import { Badge } from "@/components/ui/badge";
 import { Label } from "@radix-ui/react-label";
 
@@ -15,28 +14,43 @@ function AgreementViewer({ agreements, active, fetchAgreement }) {
   const getBadgeColor = (status) => {
     switch (status) {
       case "pending":
-        return "bg-yellow-500";
+        return "bg-orange-500";
+      case "active":
+        return "bg-cyan-400";
       case "completed":
-        return "bg-green-500";
-      case "in-progress":
-        return "bg-blue-500";
+        return "bg-emerald-600 text-white";
+      case "verified":
+        return "bg-green-600 text-white";
+      case "disputed":
+        return "bg-green-600 text-white";
       default:
-        return "bg-gray-500";
+        return "bg-red-600 text-white";
     }
   };
-  console.log(active, agreements[0]);
+
+  //pending = freelancer send but not accepted by client
+  //active = accepted by client
+  //completed = completed status by freelancer
+  // verified = verified by client
+  // disputed = money sent
+  //aReject = not accepted by client
+  //cReject = completion is not accepted by client
 
   return (
     <ScrollArea className="h-full w-full rounded-md border p-3">
-      {agreements.length == 0 && <Label>Nothing To Show Yet</Label>}
+      {agreements.length === 0 && <Label>Nothing To Show Yet</Label>}
       {agreements.map((agreement) => (
         <Card
           key={agreement._id}
-          className={`w-full  cursor-pointer mt-3 ${
-            active.id == agreement._id ? "bg-gray-200" : "hover:bg-gray-50"
+          className={`w-full cursor-pointer mt-3 ${
+            active && active.id === agreement._id
+              ? "bg-gray-200"
+              : "hover:bg-gray-50"
           }`}
           onClick={() => {
-            fetchAgreement(agreement._id);
+            if (active.id != agreement._id) {
+              fetchAgreement(agreement._id);
+            }
           }}
         >
           <CardHeader className="text-base font-semibold p-2">

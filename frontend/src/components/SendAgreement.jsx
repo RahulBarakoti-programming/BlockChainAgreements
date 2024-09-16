@@ -10,10 +10,9 @@ import { Formik } from "formik";
 import { agreementSchema } from "@/validation/registerSchema";
 import { agreementSaver } from "@/handler/agreementServer";
 import { Loader } from "./Loader";
-import { Button } from "./ui/button";
 import { toast } from "sonner";
 
-function SendAgreement() {
+function SendAgreement({ loader, setLoader }) {
   return (
     <>
       <div className="w-full h-full">
@@ -27,14 +26,17 @@ function SendAgreement() {
           validationSchema={agreementSchema}
           onSubmit={async (values, { setSubmitting, setErrors }) => {
             try {
+              setLoader(true);
               const response = await agreementSaver({
                 clientEmail: values.clientEmail,
                 description: values.description,
                 deadline: values.deadline,
                 amount: values.amount,
               });
+              setLoader(false);
             } catch (error) {
               console.error(error);
+              setLoader(false);
               toast("Error", {
                 description: "something went wrong",
 
@@ -88,7 +90,6 @@ function SendAgreement() {
                   )}
                 </div>
               </ResizablePanel>
-              <Loader isSubmitting={isSubmitting}></Loader>
             </ResizablePanelGroup>
           )}
         </Formik>
