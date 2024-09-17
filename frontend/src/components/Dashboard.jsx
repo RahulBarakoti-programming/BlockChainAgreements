@@ -18,6 +18,22 @@ function Dashboard() {
   const [active, setActive] = useState(null);
   const [agreements, setAgreements] = useState([]);
 
+  const updateAgreementStatus = (agreementId, newStatus) => {
+    setAgreements((prevAgreements) =>
+      prevAgreements.map((agreement) =>
+        agreement._id === agreementId
+          ? { ...agreement, status: newStatus }
+          : agreement
+      )
+    );
+
+    setActive((prevActive) =>
+      prevActive && prevActive.id === agreementId
+        ? { ...prevActive, status: newStatus }
+        : prevActive
+    );
+  };
+
   const fetchAgreement = async (id) => {
     try {
       const response = await axios.get(
@@ -36,28 +52,27 @@ function Dashboard() {
       console.error("Error fetching agreement", error);
     }
   };
+  const fetchAgreements = async () => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL}/agreement/get`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      setAgreements(response.data);
+      if (response.data.length !== 0) {
+        fetchAgreement(response.data[0]._id);
+      }
+    } catch (error) {
+      console.error("Error fetching agreements", error);
+    }
+  };
 
   useEffect(() => {
-    const fetchAgreements = async () => {
-      try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_API_URL}/agreement/get`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
-        setAgreements(response.data);
-        if (response.data.length !== 0) {
-          fetchAgreement(response.data[0]._id);
-        }
-      } catch (error) {
-        console.error("Error fetching agreements", error);
-      }
-    };
-
     fetchAgreements();
   }, []);
 
@@ -92,16 +107,20 @@ function Dashboard() {
               <ResizablePanel defaultSize={75}>
                 <div className="flex h-full items-center justify-center p-6">
                   <AgreementReader
-                    setAgreement={setActive}
-                    setLoader={setLoader}
                     agreement={active}
+                    setLoader={setLoader}
+                    updateAgreementStatus={updateAgreementStatus}
                   />
                 </div>
               </ResizablePanel>
             </ResizablePanelGroup>
           </TabsContent>
           <TabsContent className="h-full" value="password">
-            <SendAgreement loader={loader} setLoader={setLoader} />
+            <SendAgreement
+              fetchAgreements={fetchAgreements}
+              loader={loader}
+              setLoader={setLoader}
+            />
           </TabsContent>
         </Tabs>
       </div>

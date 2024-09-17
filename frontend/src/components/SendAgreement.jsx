@@ -12,7 +12,7 @@ import { agreementSaver } from "@/handler/agreementServer";
 import { Loader } from "./Loader";
 import { toast } from "sonner";
 
-function SendAgreement({ loader, setLoader }) {
+function SendAgreement({ loader, setLoader, fetchAgreements }) {
   return (
     <>
       <div className="w-full h-full">
@@ -33,10 +33,21 @@ function SendAgreement({ loader, setLoader }) {
                 deadline: values.deadline,
                 amount: values.amount,
               });
+
+              values.clientEmail = "";
+              values.description = "";
+              values.deadline = "";
+              values.amount = "";
+              fetchAgreements();
               setLoader(false);
             } catch (error) {
               console.error(error);
               setLoader(false);
+              values.clientEmail = "";
+              values.description = "";
+              values.deadline = "";
+              values.amount = "";
+              fetchAgreements();
               toast("Error", {
                 description: "something went wrong",
 

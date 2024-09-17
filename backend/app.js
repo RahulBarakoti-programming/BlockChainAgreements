@@ -7,7 +7,11 @@ import agreementRoute from "./routers/agreementRoute.js";
 
 const app = express()
 
-app.use(cors())
+app.use(cors({
+  origin: 'https://66e91a925b25ea91826b1dec--profound-kringle-c12b4c.netlify.app',
+  methods: 'GET,POST,PUT,DELETE,OPTIONS',
+  allowedHeaders: 'Content-Type,Authorization'
+}))
 
 
 app.use(express.json({ limit: "16kb" }))

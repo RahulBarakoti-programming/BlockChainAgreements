@@ -30,6 +30,7 @@ export const PrivateRoute = ({ children }) => {
         setIsAuthenticated(false);
       }
     };
+
     checkToken();
   }, [token]);
 
@@ -53,6 +54,7 @@ export const AuthRoute = ({ children }) => {
         setIsAuthenticated(false);
       }
     };
+
     checkToken();
   }, [token]);
 

@@ -85,7 +85,7 @@ function AgreementInputs({
             <Calendar
               mode="single"
               selected={values.deadline}
-              onSelect={(date) => setFieldValue("deadline", date)} // Corrected to setFieldValue for deadline
+              onSelect={(date) => setFieldValue("deadline", date)}
               initialFocus
             />
           </PopoverContent>

@@ -11,24 +11,21 @@ import {
   verifyCompletion,
 } from "@/web3functions/clientSign";
 
-function AgreementReader({ agreement, setLoader, setAgreement }) {
+function AgreementReader({
+  agreement,
+  setLoader,
+  setAgreement,
+  updateAgreementStatus,
+}) {
   if (!agreement) {
     return <div>No agreement selected.</div>;
   }
-
-  // Function to handle state updates safely
-  const updateAgreementStatus = (newStatus) => {
-    setAgreement((prevAgreement) => ({
-      ...prevAgreement,
-      status: newStatus,
-    }));
-  };
 
   const handleSignAndApprove = async () => {
     setLoader(true);
     try {
       await clientSign(agreement.id, agreement.amount);
-      updateAgreementStatus("active"); // Update status locally
+      updateAgreementStatus(agreement.id, "active");
     } catch (error) {
       console.error("Error signing and approving", error);
     } finally {
@@ -44,7 +41,7 @@ function AgreementReader({ agreement, setLoader, setAgreement }) {
         agreement.amount,
         agreement.id
       );
-      updateAgreementStatus("pending"); // Update status locally
+      updateAgreementStatus(agreement.id, "pending");
     } catch (error) {
       console.error("Error signing and sending", error);
     } finally {
@@ -56,7 +53,7 @@ function AgreementReader({ agreement, setLoader, setAgreement }) {
     setLoader(true);
     try {
       await updateByFreelancer(agreement.id, "completed");
-      updateAgreementStatus("completed"); // Update status locally
+      updateAgreementStatus(agreement.id, "completed");
     } catch (error) {
       console.error("Error updating by freelancer", error);
     } finally {
@@ -68,7 +65,7 @@ function AgreementReader({ agreement, setLoader, setAgreement }) {
     setLoader(true);
     try {
       await verifyCompletion(agreement.id);
-      updateAgreementStatus("verified"); // Update status locally
+      updateAgreementStatus(agreement.id, "verified");
     } catch (error) {
       console.error("Error verifying agreement", error);
     } finally {

@@ -22,19 +22,25 @@ function AgreementViewer({ agreements, active, fetchAgreement }) {
       case "verified":
         return "bg-green-600 text-white";
       case "disputed":
-        return "bg-green-600 text-white";
+        return "bg-red-600 text-white";
       default:
         return "bg-red-600 text-white";
     }
   };
 
-  //pending = freelancer send but not accepted by client
-  //active = accepted by client
-  //completed = completed status by freelancer
-  // verified = verified by client
-  // disputed = money sent
-  //aReject = not accepted by client
-  //cReject = completion is not accepted by client
+  const getBadgeText = (requestedBy, status) => {
+    if (requestedBy === "freelancer") {
+      if (status === "initial") return "Not Signed";
+      if (status === "pending") return "Awaiting Signature";
+      if (status === "completed") return "Awaiting Review";
+    }
+    if (requestedBy === "client") {
+      if (status === "pending") return "Not Signed";
+      if (status === "completed") return "Review Requested";
+    }
+    if (status === "verified") return "Paid";
+    return status.charAt(0).toUpperCase() + status.slice(1);
+  };
 
   return (
     <ScrollArea className="h-full w-full rounded-md border p-3">
@@ -48,7 +54,7 @@ function AgreementViewer({ agreements, active, fetchAgreement }) {
               : "hover:bg-gray-50"
           }`}
           onClick={() => {
-            if (active.id != agreement._id) {
+            if (active.id !== agreement._id) {
               fetchAgreement(agreement._id);
             }
           }}
@@ -65,7 +71,7 @@ function AgreementViewer({ agreements, active, fetchAgreement }) {
                 variant="secondary"
                 className={getBadgeColor(agreement.status)}
               >
-                {agreement.status}
+                {getBadgeText(agreement.requestedBy, agreement.status)}
               </Badge>
             </CardDescription>
           </CardFooter>
