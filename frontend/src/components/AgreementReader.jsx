@@ -21,56 +21,62 @@ function AgreementReader({
     return <div>No agreement selected.</div>;
   }
 
-  const handleSignAndApprove = async () => {
+  const handleSignAndApprove = () => {
     setLoader(true);
-    try {
-      await clientSign(agreement.id, agreement.amount);
-      updateAgreementStatus(agreement.id, "active");
-    } catch (error) {
-      console.error("Error signing and approving", error);
-    } finally {
-      setLoader(false);
-    }
+    clientSign(agreement.id, agreement.amount)
+      .then((res) => (res ? updateAgreementStatus(agreement.id, "active") : ""))
+      .catch((error) => {
+        console.error("Error signing and approving", error);
+      })
+      .finally(() => {
+        setLoader(false);
+      });
   };
 
-  const handleFreelancerSignAndSend = async () => {
+  const handleFreelancerSignAndSend = () => {
     setLoader(true);
-    try {
-      await freelancerSign(
-        agreement.projectDetails.description,
-        agreement.amount,
-        agreement.id
-      );
-      updateAgreementStatus(agreement.id, "pending");
-    } catch (error) {
-      console.error("Error signing and sending", error);
-    } finally {
-      setLoader(false);
-    }
+    freelancerSign(
+      agreement.projectDetails.description,
+      agreement.amount,
+      agreement.id
+    )
+      .then((res) =>
+        res ? updateAgreementStatus(agreement.id, "pending") : ""
+      )
+      .catch((error) => {
+        console.error("Error signing and sending", error);
+      })
+      .finally(() => {
+        setLoader(false);
+      });
   };
 
-  const handleFreelancerComplete = async () => {
+  const handleFreelancerComplete = () => {
     setLoader(true);
-    try {
-      await updateByFreelancer(agreement.id, "completed");
-      updateAgreementStatus(agreement.id, "completed");
-    } catch (error) {
-      console.error("Error updating by freelancer", error);
-    } finally {
-      setLoader(false);
-    }
+    updateByFreelancer(agreement.id, "completed")
+      .then((res) =>
+        res ? updateAgreementStatus(agreement.id, "completed") : ""
+      )
+      .catch((error) => {
+        console.error("Error updating by freelancer", error);
+      })
+      .finally(() => {
+        setLoader(false);
+      });
   };
 
-  const handleClientVerify = async () => {
+  const handleClientVerify = () => {
     setLoader(true);
-    try {
-      await verifyCompletion(agreement.id);
-      updateAgreementStatus(agreement.id, "verified");
-    } catch (error) {
-      console.error("Error verifying agreement", error);
-    } finally {
-      setLoader(false);
-    }
+    verifyCompletion(agreement.id)
+      .then((res) =>
+        res ? updateAgreementStatus(agreement.id, "verified") : ""
+      )
+      .catch((error) => {
+        console.error("Error verifying agreement", error);
+      })
+      .finally(() => {
+        setLoader(false);
+      });
   };
 
   return (

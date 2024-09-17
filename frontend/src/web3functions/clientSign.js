@@ -2,6 +2,7 @@ import { ethers } from 'ethers';
 import axios from 'axios';
 import { toast } from 'sonner';
 
+
 // Contract ABI
 const CONTRACT_ABI = [
   {
@@ -162,9 +163,10 @@ export async function clientSign(agreementId, amount) {
   try {
 
     if (!window.ethereum) {
-      return toast.error('MetaMask wallet not found. Please install MetaMask to continue.', {
+      toast.error('MetaMask wallet not found. Please install MetaMask to continue.', {
         style: { color: 'red' },
       });
+      return false;
     }
 
 
@@ -188,6 +190,7 @@ export async function clientSign(agreementId, amount) {
 
     toast.success(`Transaction confirmed in block: ${receipt.blockNumber}`, { style: { color: 'green' } });
 
+
     const response = await axios.put(
       `${import.meta.env.VITE_API_URL}/agreement/create/signclient`,
       {
@@ -204,7 +207,7 @@ export async function clientSign(agreementId, amount) {
     );
 
     toast.success('Agreement signed and updated on server successfully!', { style: { color: 'green' } });
-    return response.data;
+    return true;
   } catch (error) {
 
     if (error.code === 4001) {
@@ -225,9 +228,10 @@ export async function freelancerSign(projectDetails, amount, agreementId) {
   try {
 
     if (!window.ethereum) {
-      return toast.error('MetaMask wallet not found. Please install MetaMask to continue.', {
+      toast.error('MetaMask wallet not found. Please install MetaMask to continue.', {
         style: { color: 'red' },
       });
+      return false;
     }
 
 
@@ -269,7 +273,7 @@ export async function freelancerSign(projectDetails, amount, agreementId) {
     );
 
     toast.success('Agreement signed and sent to client successfully!', { style: { color: 'green' } });
-    return response.data;
+    return true;
   } catch (error) {
 
     if (error.code === 4001) {
@@ -291,9 +295,10 @@ export async function verifyCompletion(agreementId) {
   try {
 
     if (!window.ethereum) {
-      return toast.error('MetaMask wallet not found. Please install MetaMask to continue.', {
+      toast.error('MetaMask wallet not found. Please install MetaMask to continue.', {
         style: { color: 'red' },
       });
+      return false;
     }
 
     const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -315,7 +320,7 @@ export async function verifyCompletion(agreementId) {
     toast.success(`Transaction confirmed in block: ${receipt.blockNumber}`, { style: { color: 'green' } });
 
     updateByClient(agreementId, 'verified')
-    return { clientWalletAddress, txHash: tx.hash, blockNumber: receipt.blockNumber };
+    return true;
   } catch (error) {
 
     if (error.code === 4001) {
@@ -352,8 +357,10 @@ export async function updateByClient(agreementId, status) {
     );
 
     toast.success(`Agreement status updated successfully`, { style: { color: 'green' } });
+    return true;
   } catch (error) {
     toast.error('something went wrong please try again later', { style: { color: 'red' } });
+    return false;
   }
 }
 export async function updateByFreelancer(agreementId, status) {
@@ -372,8 +379,10 @@ export async function updateByFreelancer(agreementId, status) {
     );
 
     toast.success(`Agreement status updated successfully`, { style: { color: 'green' } });
+    return true;
   } catch (error) {
     toast.error('something went wrong please try again later', { style: { color: 'red' } });
+    return false;
   }
 }
 

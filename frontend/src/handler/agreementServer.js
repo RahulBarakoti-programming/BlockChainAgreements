@@ -41,7 +41,7 @@ export const agreementSaver = async (data) => {
 
 
   } catch (error) {
-    err = error.response?.data?.message || 'An error occurred. Please try again.'
+    const err = error.response?.data?.message || 'An error occurred. Please try again.'
     toast("Error", {
       description: err,
 
