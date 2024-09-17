@@ -10,6 +10,7 @@ import {
   updateByFreelancer,
   verifyCompletion,
 } from "@/web3functions/clientSign";
+import { ScrollArea } from "@radix-ui/react-scroll-area";
 
 function AgreementReader({
   agreement,
@@ -80,7 +81,7 @@ function AgreementReader({
   };
 
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-full overflow-y-scroll">
       <div className="p-3 w-full flex">
         <span className="w-10">
           <Avatar>
@@ -95,9 +96,11 @@ function AgreementReader({
       <hr />
       <div className="h-fit w-full pt-4">
         <Label className="text-xl">Agreement Details</Label>
+
         <CardDescription className="mb-5">
           {agreement.projectDetails.description || "No description available."}
         </CardDescription>
+
         <hr className="mb-4" />
         <Label className="text-base">Deadline</Label>
         <CardDescription className="mb-5">
