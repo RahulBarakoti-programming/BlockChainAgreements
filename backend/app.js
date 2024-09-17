@@ -8,7 +8,7 @@ import agreementRoute from "./routers/agreementRoute.js";
 const app = express()
 
 app.use(cors({
-  origin: 'https://profound-kringle-c12b4c.netlify.app',
+  origin: 'https://securelancing.netlify.app',
   methods: 'GET,POST,PUT,DELETE,OPTIONS',
   allowedHeaders: 'Content-Type,Authorization',
   credentials: true
